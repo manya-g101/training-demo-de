@@ -1,0 +1,6 @@
+selected resource name:		PL_Ingest_Bronze
+selected resource type:		pipeline
+workspace name:			banking101
+workspace location:		australiaeast
+subscription id:		e5ad2966-bc18-422f-bb27-59db98638216
+time of download (UTC):		Sat, 29 Aug 2026 10:40:54 GMT

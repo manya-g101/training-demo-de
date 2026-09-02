@@ -1,0 +1,20 @@
+{
+    "name": "Bronze_Customers",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "banking101-WorkspaceDefaultStorage",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "folderPath": "bronze",
+                "fileSystem": "banking"
+            }
+        },
+        "schema": {}
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}

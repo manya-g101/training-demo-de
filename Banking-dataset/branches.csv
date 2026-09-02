@@ -1,0 +1,201 @@
+branch_id,branch_name,city,state,region
+B0001,Mand Bank Branch,Khandwa,Tripura,south
+B0002,Mohanty Bank Branch,North Dumdum,Nagaland,East
+B0003,Garg Bank Branch,Muzaffarnagar,Karnataka,North
+B0004,Sachdev Bank Branch,Tiruvottiyur,Kerala,South
+B0005,Jain Bank Branch,Pali,Punjab,Central
+B0006,Oak Bank Branch,Kolhapur,Andhra Pradesh,north
+B0007,Ravi Bank Branch,Hospet,Tripura,South
+B0008,Bakshi Bank Branch,Dhule,Mizoram,West
+B0009,Sinha Bank Branch,Singrauli,Bihar,North
+B0010,Rana Bank Branch,Ambattur,Madhya Pradesh,North
+B0011,Chaudhry Bank Branch,Panipat,Tripura,Central
+B0012,Grewal Bank Branch,Nanded,Kerala,Central
+B0013,Prasad Bank Branch,Thanjavur,Odisha,Central
+B0014,Bail Bank Branch,Madanapalle,Rajasthan,Central
+B0015,Kala Bank Branch,Danapur,Goa,East
+B0016,Kannan Bank Branch,Khora ,Bihar,East
+B0017,Badami Bank Branch,Kalyan-Dombivli,Odisha,West
+B0018,Bhattacharyya Bank Branch,Anantapur,Goa,North
+B0019,Borah Bank Branch,Anantapuram,Bihar,West
+B0020,Malhotra Bank Branch,Dindigul,West Bengal,North
+B0021,Ravi Bank Branch,Guntur,Punjab,South
+B0022,Khalsa Bank Branch,Junagadh,Mizoram,East
+B0023,Nigam Bank Branch,Parbhani,Mizoram,West
+B0024,Tak Bank Branch,Durgapur,Sikkim,North
+B0025,Lad Bank Branch,Kishanganj,Kerala,South
+B0026,Dhar Bank Branch,Rewa,Assam,Central
+B0027,Sarkar Bank Branch,Chittoor,Haryana,South
+B0028,Kashyap Bank Branch,Bikaner,Assam,Central
+B0029,Mahal Bank Branch,Bharatpur,Kerala,North
+B0030,Sen Bank Branch,Hospet,Gujarat,North
+B0031,Ghose Bank Branch,Bhatpara,Goa,East
+B0032,Butala Bank Branch,Latur,West Bengal,South
+B0033,Bava Bank Branch,Kavali,Tamil Nadu,North
+B0034,Pal Bank Branch,Bahraich,Uttar Pradesh,East
+B0035,Dugal Bank Branch,Bhagalpur,Haryana,Central
+B0036,Contractor Bank Branch,Amaravati,Tripura,South
+B0037,Sagar Bank Branch,Belgaum,Haryana,north
+B0038,Bala Bank Branch,New Delhi,Mizoram,South
+B0039,Borde Bank Branch,Gulbarga,Uttarakhand,West
+B0040,Parekh Bank Branch,Ballia,Uttarakhand,North
+B0041,Chanda Bank Branch,Amravati,Telangana,South
+B0042,Kanda Bank Branch,Panihati,Assam,North
+B0043,Chandra Bank Branch,Bhatpara,Rajasthan,West
+B0044,Nanda Bank Branch,Gorakhpur,Manipur,West
+B0045,Dhaliwal Bank Branch,Tirupati,Assam,North
+B0046,Arya Bank Branch,Gandhinagar,Mizoram,South
+B0047,Lad Bank Branch,Firozabad,Tripura,South
+B0048,Loyal Bank Branch,Bhiwani,Maharashtra,South
+B0049,Toor Bank Branch,Delhi,Himachal Pradesh,South
+B0050,Bora Bank Branch,Raichur,Uttarakhand,North
+B0051,Verma Bank Branch,Chittoor,Goa,Central
+B0052,Parmer Bank Branch,Madhyamgram,Rajasthan,Central
+B0053,Johal Bank Branch,Tezpur,Maharashtra,South
+B0054,Naidu Bank Branch,Amroha,Jharkhand,East
+B0055,Bajwa Bank Branch,Gangtok,Goa,North
+B0056,Brar Bank Branch,Bharatpur,Punjab,South
+B0057,Raghavan Bank Branch,Ajmer,Maharashtra,North
+B0058,Murty Bank Branch,Raipur,Mizoram,East
+B0059,Srivastava Bank Branch,Chandigarh,Mizoram,West
+B0060,Sanghvi Bank Branch,Panihati,Himachal Pradesh,Central
+B0061,Dutta Bank Branch,Howrah,Karnataka,East
+B0062,Mangat Bank Branch,Noida,Meghalaya,South
+B0063,Gole Bank Branch,Gaya,Punjab,West
+B0064,Bhat Bank Branch,Panihati,Madhya Pradesh,East
+B0065,Chandran Bank Branch,Ambattur,Meghalaya,South
+B0066,Buch Bank Branch,Uluberia,Manipur,Central
+B0067,Mane Bank Branch,Bijapur,Arunachal Pradesh,Central
+B0068,Chad Bank Branch,Jalna,Karnataka,Central
+B0069,Parikh Bank Branch,Unnao,Meghalaya,Central
+B0070,Shah Bank Branch,Loni,Gujarat,West
+B0071,Sur Bank Branch,Delhi,Arunachal Pradesh,Central
+B0072,Manne Bank Branch,Rajpur Sonarpur,Uttarakhand,North
+B0073,Dixit Bank Branch,Ghaziabad,Uttar Pradesh,South
+B0074,Mall Bank Branch,Gandhidham,Bihar,West
+B0075,Bahl Bank Branch,North Dumdum,Kerala,North
+B0076,De Bank Branch,Alwar,Chhattisgarh,Central
+B0077,Pai Bank Branch,Yamunanagar,Meghalaya,North
+B0078,Narayan Bank Branch,Mathura,Tamil Nadu,Central
+B0079,Bhavsar Bank Branch,Thane,Mizoram,West
+B0080,Agate Bank Branch,Moradabad,Gujarat,West
+B0081,Bala Bank Branch,Nizamabad,Chhattisgarh,Central
+B0082,Boase Bank Branch,Satna,Odisha,North
+B0083,Dasgupta Bank Branch,Orai,Manipur,East
+B0084,Venkatesh Bank Branch,Rampur,Haryana,South
+B0085,Vaidya Bank Branch,Vijayanagaram,Chhattisgarh,East
+B0086,Ranganathan Bank Branch,Amaravati,Madhya Pradesh,Central
+B0087,Dhar Bank Branch,Barasat,Jharkhand,Central
+B0088,Pandey Bank Branch,Thiruvananthapuram,Odisha,North
+B0089,Bal Bank Branch,Fatehpur,Mizoram,South
+B0090,Venkatesh Bank Branch,Vasai-Virar,Arunachal Pradesh,Central
+B0091,Sule Bank Branch,Panihati,Gujarat,East
+B0092,Chaudhry Bank Branch,Ichalkaranji,Uttarakhand,north
+B0093,Vasa Bank Branch,Gudivada,Jharkhand,West
+B0094,Ganesh Bank Branch,Rajkot,Manipur,North
+B0095,Thaman Bank Branch,Khora ,Arunachal Pradesh,west
+B0096,Walla Bank Branch,Kishanganj,Telangana,West
+B0097,Kulkarni Bank Branch,Amritsar,Telangana,South
+B0098,Kapadia Bank Branch,Panchkula,Uttarakhand,West
+B0099,Sarma Bank Branch,Cuttack,Uttarakhand,South
+B0100,Thaker Bank Branch,Tiruppur,Odisha,West
+B0101,Barad Bank Branch,Raiganj,Himachal Pradesh,South
+B0102,Raju Bank Branch,Bhatpara,West Bengal,North
+B0103,Wagle Bank Branch,Bongaigaon,Himachal Pradesh,Central
+B0104,Manda Bank Branch,Allahabad,Madhya Pradesh,West
+B0105,Sem Bank Branch,Madurai,Haryana,West
+B0106,Magar Bank Branch,Uluberia,Goa,East
+B0107,Kota Bank Branch,Mau,Bihar,Central
+B0108,Chandran Bank Branch,Morena,Mizoram,East
+B0109,Sangha Bank Branch,Kolhapur,Chhattisgarh,south
+B0110,Kapadia Bank Branch,Durg,Chhattisgarh,North
+B0111,De Bank Branch,Gopalpur,Himachal Pradesh,East
+B0112,Palla Bank Branch,Bareilly,Andhra Pradesh,Central
+B0113,Kar Bank Branch,Aurangabad,Haryana,South
+B0114,Jayaraman Bank Branch,Panvel,Assam,West
+B0115,Vohra Bank Branch,Arrah,Telangana,Central
+B0116,Chadha Bank Branch,Bhopal,Haryana,East
+B0117,Bala Bank Branch,Nadiad,Bihar,West
+B0118,Chandra Bank Branch,Bhilai,West Bengal,South
+B0119,Karnik Bank Branch,Asansol,Tripura,Central
+B0120,Chander Bank Branch,Chandrapur,Tamil Nadu,North
+B0121,Gaba Bank Branch,Bhubaneswar,Kerala,West
+B0122,Bhasin Bank Branch,Darbhanga,Punjab,Central
+B0123,Rattan Bank Branch,Miryalaguda,Nagaland,East
+B0124,Nayar Bank Branch,Bhilai,Assam,West
+B0125,Sandhu Bank Branch,Vijayanagaram,Telangana,West
+B0126,Salvi Bank Branch,Chandigarh,Bihar,North
+B0127,Hayer Bank Branch,Kavali,Tripura,North
+B0128,Majumdar Bank Branch,Anand,Telangana,West
+B0129,Char Bank Branch,Maheshtala,West Bengal,South
+B0130,Sarraf Bank Branch,Mau,Goa,East
+B0131,Gaba Bank Branch,Silchar,Sikkim,East
+B0132,Walia Bank Branch,Thoothukudi,Tamil Nadu,East
+B0133,Dani Bank Branch,Khandwa,West Bengal,Central
+B0134,Mody Bank Branch,Korba,Uttarakhand,North
+B0135,Ratti Bank Branch,Tinsukia,Punjab,West
+B0136,Sarin Bank Branch,Amaravati,Telangana,West
+B0137,Bumb Bank Branch,Sikar,Haryana,West
+B0138,Hari Bank Branch,Ambattur,Meghalaya,Central
+B0139,Chacko Bank Branch,Ichalkaranji,Chhattisgarh,east
+B0140,Shan Bank Branch,Hajipur,Chhattisgarh,South
+B0141,Basu Bank Branch,Kochi,Punjab,South
+B0142,Mallick Bank Branch,Sasaram,Nagaland,west
+B0143,Gokhale Bank Branch,Orai,Mizoram,North
+B0144,Khare Bank Branch,Satna,Odisha,East
+B0145,Bassi Bank Branch,Ghaziabad,Uttar Pradesh,North
+B0146,Bahri Bank Branch,Haridwar,Kerala,East
+B0147,Dixit Bank Branch,Bardhaman,Tripura,East
+B0148,Choudhry Bank Branch,Kanpur,Jharkhand,Central
+B0149,Jain Bank Branch,Khandwa,Telangana,West
+B0150,Bobal Bank Branch,Katni,Uttarakhand,South
+B0151,Kaur Bank Branch,Udupi,Tamil Nadu,West
+B0152,Khosla Bank Branch,Visakhapatnam,Andhra Pradesh,West
+B0153,Rana Bank Branch,Eluru,Assam,West
+B0154,Vora Bank Branch,Alappuzha,Chhattisgarh,East
+B0155,Bandi Bank Branch,Gurgaon,Goa,Central
+B0156,Patla Bank Branch,Imphal,Nagaland,Central
+B0157,Madan Bank Branch,Surendranagar Dudhrej,Meghalaya,North
+B0158,Shankar Bank Branch,Gudivada,Maharashtra,East
+B0159,Khanna Bank Branch,Morbi,Uttar Pradesh,South
+B0160,Doctor Bank Branch,Udupi,West Bengal,West
+B0161,Thaman Bank Branch,Khammam,Goa,East
+B0162,Sura Bank Branch,Bhusawal,Uttar Pradesh,East
+B0163,Rout Bank Branch,Rajahmundry,Uttarakhand,East
+B0164,Doshi Bank Branch,Raipur,Kerala,East
+B0165,Uppal Bank Branch,Sikar,West Bengal,Central
+B0166,Jayaraman Bank Branch,Bhopal,Madhya Pradesh,North
+B0167,Barad Bank Branch,Jalna,Telangana,East
+B0168,Varughese Bank Branch,Alappuzha,Arunachal Pradesh,North
+B0169,Gandhi Bank Branch,Pondicherry,Tamil Nadu,Central
+B0170,Kant Bank Branch,Sasaram,Nagaland,Central
+B0171,Prabhu Bank Branch,Moradabad,Jharkhand,north
+B0172,Naidu Bank Branch,Visakhapatnam,Rajasthan,West
+B0173,Lala Bank Branch,Nagaon,Tripura,West
+B0174,Bora Bank Branch,Kurnool,Haryana,West
+B0175,Raman Bank Branch,Panchkula,Nagaland,East
+B0176,Prashad Bank Branch,Ballia,Chhattisgarh,North
+B0177,Bobal Bank Branch,Pallavaram,Nagaland,Central
+B0178,Toor Bank Branch,Jaunpur,Kerala,West
+B0179,Yohannan Bank Branch,Gorakhpur,Assam,North
+B0180,Mangal Bank Branch,Ichalkaranji,Himachal Pradesh,North
+B0181,Patla Bank Branch,Mathura,Chhattisgarh,East
+B0182,Chaudhary Bank Branch,Bhiwandi,Rajasthan,Central
+B0183,Konda Bank Branch,Yamunanagar,Assam,South
+B0184,Chaudhry Bank Branch,Bathinda,Rajasthan,Central
+B0185,Master Bank Branch,Ghaziabad,Tamil Nadu,South
+B0186,Patel Bank Branch,Siliguri,Uttarakhand,West
+B0187,Sule Bank Branch,Anantapur,Kerala,East
+B0188,Bassi Bank Branch,Tezpur,Tamil Nadu,East
+B0189,Ravi Bank Branch,Bhilai,Andhra Pradesh,South
+B0190,Roy Bank Branch,Machilipatnam,Telangana,South
+B0191,Badami Bank Branch,Raiganj,Madhya Pradesh,East
+B0192,Jha Bank Branch,Hindupur,Madhya Pradesh,east
+B0193,Yadav Bank Branch,Kavali,Tamil Nadu,West
+B0194,Dutt Bank Branch,Avadi,Arunachal Pradesh,West
+B0195,More Bank Branch,Bhatpara,Goa,West
+B0196,Parekh Bank Branch,Madurai,Telangana,North
+B0197,Radhakrishnan Bank Branch,Ahmednagar,Assam,East
+B0198,Ravi Bank Branch,Firozabad,Arunachal Pradesh,Central
+B0199,Mall Bank Branch,Amaravati,Haryana,South
+B0200,Bhasin Bank Branch,Panvel,Chhattisgarh,Central

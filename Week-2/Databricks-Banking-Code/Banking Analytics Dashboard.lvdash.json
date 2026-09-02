@@ -1,0 +1,1573 @@
+{
+  "datasets": [
+    {
+      "name": "199f80b6",
+      "displayName": "dim_account",
+      "config": {
+        "version": "1.1",
+        "source": "banking.gold.dim_account",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "9de8de6d",
+      "displayName": "dim_branch",
+      "config": {
+        "version": "1.1",
+        "source": "banking.gold.dim_branch",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "db8dd3ea",
+      "displayName": "dim_customer",
+      "config": {
+        "version": "1.1",
+        "source": "banking.gold.dim_customer",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "b6cbde98",
+      "displayName": "dim_date",
+      "config": {
+        "version": "1.1",
+        "source": "banking.gold.dim_date",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "f90204d9",
+      "displayName": "fact_transaction",
+      "config": {
+        "version": "1.1",
+        "source": "banking.gold.fact_transaction",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ff49b9db",
+      "displayName": "KPI - Total Transactions",
+      "queryLines": [
+        "SELECT\n",
+        "    COUNT(*) AS total_transactions\n",
+        "FROM banking.gold.fact_transaction;"
+      ]
+    },
+    {
+      "name": "3f49590c",
+      "displayName": "Aggregate Sum of Banking Transaction Values",
+      "queryLines": [
+        "SELECT\n",
+        "    SUM(amount) AS total_transaction_amount\n",
+        "FROM banking.gold.fact_transaction;"
+      ]
+    },
+    {
+      "name": "fae03f8c",
+      "displayName": "average banking transaction value summary dataset",
+      "queryLines": [
+        "SELECT\n",
+        "    ROUND(AVG(amount), 2) AS average_transaction_amount\n",
+        "FROM banking.gold.fact_transaction;"
+      ]
+    },
+    {
+      "name": "ac8b6f7b",
+      "displayName": "Transaction Success Metrics Overview",
+      "queryLines": [
+        "SELECT\n",
+        "    COUNT(*) AS successful_transactions\n",
+        "FROM banking.gold.fact_transaction\n",
+        "WHERE transaction_status = 'SUCCESS';"
+      ]
+    },
+    {
+      "name": "dde16942",
+      "displayName": "Success Rate Insights in Banking Transactions",
+      "queryLines": [
+        "SELECT\n",
+        "    ROUND(\n",
+        "        100.0 * SUM(\n",
+        "            CASE\n",
+        "                WHEN transaction_status = 'SUCCESS'\n",
+        "                THEN 1\n",
+        "                ELSE 0\n",
+        "            END\n",
+        "        ) / COUNT(*),\n",
+        "        2\n",
+        "    ) AS success_rate_percentage\n",
+        "FROM banking.gold.fact_transaction;"
+      ]
+    },
+    {
+      "name": "888b5d01",
+      "displayName": "Monthly Banking Transactions Summary",
+      "queryLines": [
+        "SELECT\n",
+        "    d.year,\n",
+        "    d.month,\n",
+        "    d.month_name,\n",
+        "    CONCAT(d.year, '-', LPAD(d.month, 2, '0')) AS month_year,\n",
+        "    COUNT(*) AS transaction_count,\n",
+        "    ROUND(SUM(f.amount), 2) AS total_amount\n",
+        "FROM banking.gold.fact_transaction f\n",
+        "JOIN banking.gold.dim_date d\n",
+        "    ON f.date_key = d.date_key\n",
+        "GROUP BY\n",
+        "    d.year,\n",
+        "    d.month,\n",
+        "    d.month_name\n",
+        "ORDER BY\n",
+        "    d.year,\n",
+        "    d.month;"
+      ]
+    },
+    {
+      "name": "ebb06218",
+      "displayName": "Unique Customer Count Overview",
+      "queryLines": [
+        "SELECT COUNT(DISTINCT customer_id) AS total_customers\n",
+        "FROM banking.gold.dim_customer;"
+      ]
+    },
+    {
+      "name": "f9bc25f1",
+      "displayName": "Transaction Summary by Type with Counts and Amounts",
+      "queryLines": [
+        "SELECT\n",
+        "    transaction_type,\n",
+        "    COUNT(*) AS transaction_count,\n",
+        "    ROUND(SUM(amount), 2) AS total_amount,\n",
+        "    ROUND(AVG(amount), 2) AS average_amount\n",
+        "FROM banking.gold.fact_transaction\n",
+        "GROUP BY\n",
+        "    transaction_type\n",
+        "ORDER BY\n",
+        "    total_amount DESC;"
+      ]
+    },
+    {
+      "name": "90107905",
+      "displayName": "Transaction Status Frequency Summary Dataset",
+      "queryLines": [
+        "SELECT\n",
+        "    transaction_status,\n",
+        "    COUNT(*) AS transaction_count\n",
+        "FROM banking.gold.fact_transaction\n",
+        "GROUP BY\n",
+        "    transaction_status\n",
+        "ORDER BY\n",
+        "    transaction_count DESC;"
+      ]
+    },
+    {
+      "name": "560775e1",
+      "displayName": "Payment Method Transaction Insights",
+      "queryLines": [
+        "SELECT\n",
+        "    payment_method,\n",
+        "    COUNT(*) AS transaction_count,\n",
+        "    ROUND(SUM(amount), 2) AS total_amount\n",
+        "FROM banking.gold.fact_transaction\n",
+        "GROUP BY\n",
+        "    payment_method\n",
+        "ORDER BY\n",
+        "    transaction_count DESC;"
+      ]
+    },
+    {
+      "name": "3c4e618f",
+      "displayName": "Transaction dataset",
+      "queryLines": [
+        "SELECT\n",
+        "    f.transaction_id,\n",
+        "    f.transaction_type,\n",
+        "    f.amount,\n",
+        "    f.payment_method,\n",
+        "    f.transaction_status,\n",
+        "    f.account_key,\n",
+        "    f.customer_key,\n",
+        "    f.branch_key,\n",
+        "    f.date_key\n",
+        "FROM banking.gold.fact_transaction f;"
+      ]
+    },
+    {
+      "name": "8febcfcf",
+      "displayName": "Customer Regional Data",
+      "queryLines": [
+        "SELECT\n",
+        "    c.customer_key,\n",
+        "    CONCAT(c.first_name, ' ', c.last_name) AS customer_name,\n",
+        "\n",
+        "    INITCAP(TRIM(c.customer_segment)) AS customer_segment,\n",
+        "\n",
+        "    a.account_key,\n",
+        "    INITCAP(TRIM(a.account_type)) AS account_type,\n",
+        "    INITCAP(TRIM(a.account_status)) AS account_status,\n",
+        "\n",
+        "    f.transaction_key,\n",
+        "    f.amount,\n",
+        "    f.transaction_status,\n",
+        "    f.transaction_type,\n",
+        "    f.payment_method,\n",
+        "\n",
+        "    d.full_date,\n",
+        "    d.year,\n",
+        "    d.month,\n",
+        "    d.month_name\n",
+        "\n",
+        "FROM banking.gold.fact_transaction f\n",
+        "\n",
+        "JOIN banking.gold.dim_customer c\n",
+        "    ON f.customer_key = c.customer_key\n",
+        "\n",
+        "JOIN banking.gold.dim_account a\n",
+        "    ON f.account_key = a.account_key\n",
+        "\n",
+        "JOIN banking.gold.dim_date d\n",
+        "    ON f.date_key = d.date_key;"
+      ]
+    },
+    {
+      "name": "701817b7",
+      "displayName": "top 10 customers",
+      "queryLines": [
+        "SELECT\n",
+        "    c.customer_key,\n",
+        "    CONCAT(c.first_name, ' ', c.last_name) AS customer_name,\n",
+        "    INITCAP(TRIM(c.customer_segment)) AS customer_segment,\n",
+        "    COUNT(*) AS transaction_count,\n",
+        "    ROUND(SUM(f.amount), 2) AS total_transaction_amount\n",
+        "FROM banking.gold.fact_transaction f\n",
+        "JOIN banking.gold.dim_customer c\n",
+        "    ON f.customer_key = c.customer_key\n",
+        "GROUP BY\n",
+        "    c.customer_key,\n",
+        "    c.first_name,\n",
+        "    c.last_name,\n",
+        "    c.customer_segment\n",
+        "ORDER BY\n",
+        "    total_transaction_amount DESC\n",
+        "LIMIT 10;"
+      ]
+    }
+  ],
+  "relationshipGraphs": [
+    {
+      "sources": [
+        {
+          "name": "dim_account",
+          "datasetName": "199f80b6"
+        },
+        {
+          "name": "dim_branch",
+          "datasetName": "9de8de6d"
+        },
+        {
+          "name": "dim_customer",
+          "datasetName": "db8dd3ea"
+        },
+        {
+          "name": "dim_date",
+          "datasetName": "b6cbde98"
+        },
+        {
+          "name": "fact_transaction",
+          "datasetName": "f90204d9"
+        },
+        {
+          "name": "Untitled_dataset_1",
+          "datasetName": "ff49b9db"
+        },
+        {
+          "name": "Untitled_dataset",
+          "datasetName": "3f49590c"
+        },
+        {
+          "name": "Untitled_dataset_2",
+          "datasetName": "fae03f8c"
+        },
+        {
+          "name": "Untitled_dataset_3",
+          "datasetName": "ac8b6f7b"
+        },
+        {
+          "name": "Untitled_dataset_1_1",
+          "datasetName": "dde16942"
+        },
+        {
+          "name": "Untitled_dataset_2_1",
+          "datasetName": "888b5d01"
+        },
+        {
+          "name": "Untitled_dataset_4",
+          "datasetName": "ebb06218"
+        },
+        {
+          "name": "Untitled_dataset_5",
+          "datasetName": "f9bc25f1"
+        },
+        {
+          "name": "Untitled_dataset_6",
+          "datasetName": "90107905"
+        },
+        {
+          "name": "Untitled_dataset_7",
+          "datasetName": "560775e1"
+        },
+        {
+          "name": "Untitled_dataset_8",
+          "datasetName": "3c4e618f"
+        },
+        {
+          "name": "Untitled_dataset_9",
+          "datasetName": "8febcfcf"
+        },
+        {
+          "name": "Untitled_dataset_10",
+          "datasetName": "701817b7"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "fact_transaction_dim_account",
+          "from": "fact_transaction",
+          "to": "dim_account",
+          "on": "`fact_transaction`.`account_key` = `dim_account`.`account_key`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "fact_transaction_dim_customer",
+          "from": "fact_transaction",
+          "to": "dim_customer",
+          "on": "`fact_transaction`.`customer_key` = `dim_customer`.`customer_key`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "dim_date_fact_transaction",
+          "from": "dim_date",
+          "to": "fact_transaction",
+          "on": "`dim_date`.`date_key` = `fact_transaction`.`date_key`",
+          "cardinality": "CARDINALITY_ONE_TO_MANY"
+        },
+        {
+          "name": "dim_branch_fact_transaction",
+          "from": "dim_branch",
+          "to": "fact_transaction",
+          "on": "`dim_branch`.`branch_key` = `fact_transaction`.`branch_key`",
+          "cardinality": "CARDINALITY_ONE_TO_MANY"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "1267e558",
+      "displayName": "Banking Overview",
+      "layout": [
+        {
+          "widget": {
+            "name": "transactions",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_1__total_transactions)",
+                      "expression": "SUM(`Untitled_dataset_1`.`total_transactions`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": " Total \nTransactions",
+                "headerAlignment": "center"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Untitled_dataset_1__total_transactions)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "total-t",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset__total_transaction_amount)",
+                      "expression": "SUM(`Untitled_dataset`.`total_transaction_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Transaction \nAmount",
+                "headerAlignment": "center"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Untitled_dataset__total_transaction_amount)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d0665d66",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_2__average_transaction_amount",
+                      "expression": "`Untitled_dataset_2`.`average_transaction_amount`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Avg Transaction \nAmount",
+                "headerAlignment": "center"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "Untitled_dataset_2__average_transaction_amount"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "suess",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_3__successful_transactions)",
+                      "expression": "SUM(`Untitled_dataset_3`.`successful_transactions`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Successful \nTransactions",
+                "headerAlignment": "center"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Untitled_dataset_3__successful_transactions)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "sucees",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_1_1__success_rate_percentage)",
+                      "expression": "SUM(`Untitled_dataset_1_1`.`success_rate_percentage`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Success\nPercentage",
+                "headerAlignment": "center"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Untitled_dataset_1_1__success_rate_percentage)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "monthly-transaction-amount",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_2_1__month_year",
+                      "expression": "`Untitled_dataset_2_1`.`month_year`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_2_1__transaction_count)",
+                      "expression": "SUM(`Untitled_dataset_2_1`.`transaction_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Monthly Transaction Count\n"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_2_1__month_year",
+                  "axis": {
+                    "labelAngle": 90
+                  },
+                  "displayName": "Month Year",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_2_1__transaction_count)",
+                  "axis": {
+                    "title": "Transaction Count",
+                    "labelAngle": 0
+                  },
+                  "scale": {
+                    "type": "quantitative",
+                    "domain": {
+                      "min": 0
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "monthly1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_2_1__month_year",
+                      "expression": "`Untitled_dataset_2_1`.`month_year`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_2_1__total_amount)",
+                      "expression": "SUM(`Untitled_dataset_2_1`.`total_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Monthly Transaction Amount"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_2_1__month_year",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "natural-order"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_2_1__total_amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 4,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "0dd610c8",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-weight:700;font-size:24px;color:#FFAB00\">1-BANKING TRANSACTIONS OVERVIEW</span></span>\n",
+                "\n",
+                "<span style=\"text-align:center;display:block\"><span style=\"font-weight:700;color:#FFAB00\">-An overview of the transactions and success rate</span></span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "total1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_4__total_customers)",
+                      "expression": "SUM(`Untitled_dataset_4`.`total_customers`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Customers"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Untitled_dataset_4__total_customers)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 10,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "74e1b16b",
+      "displayName": "Transaction And Payment Analytics",
+      "layout": [
+        {
+          "widget": {
+            "name": "501042b4",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-size:24px;font-weight:700\">    </span><span style=\"font-size: 24px;font-weight: 700;color: #FFAB00;\"> 2- TRANSACTION AND PAYMENT ANALYTICS</span></span>\n",
+                "\n",
+                "<span style=\"text-align:center;display:block\"><span style=\"font-weight: 700;color: #FFAB00;\">-Analysis of Payment and Transactions</span></span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "tran",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_8__transaction_type",
+                      "expression": "`Untitled_dataset_8`.`transaction_type`"
+                    },
+                    {
+                      "name": "count(Untitled_dataset_8__*)",
+                      "expression": "COUNT(STRUCT(`Untitled_dataset_8`.`*`))"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Transaction Type"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_8__transaction_type",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(Untitled_dataset_8__*)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "transaction-status-distribution",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_8__transaction_status",
+                      "expression": "`Untitled_dataset_8`.`transaction_status`"
+                    },
+                    {
+                      "name": "count(Untitled_dataset_8__*)",
+                      "expression": "COUNT(STRUCT(`Untitled_dataset_8`.`*`))"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Transaction Status Distribution"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_8__transaction_status",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(Untitled_dataset_8__*)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 2,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "pa",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "count(Untitled_dataset_8__*)",
+                      "expression": "COUNT(STRUCT(`Untitled_dataset_8`.`*`))"
+                    },
+                    {
+                      "name": "Untitled_dataset_8__payment_method",
+                      "expression": "`Untitled_dataset_8`.`payment_method`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Payment Method Distribution"
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "count(Untitled_dataset_8__*)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "axis": {
+                    "title": "Records"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_8__payment_method",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "c1700",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_8__amount)",
+                      "expression": "SUM(`Untitled_dataset_8`.`amount`)"
+                    },
+                    {
+                      "name": "Untitled_dataset_8__transaction_type",
+                      "expression": "`Untitled_dataset_8`.`transaction_type`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Amount by Transaction Type"
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(Untitled_dataset_8__amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "axis": {
+                    "title": "Amount"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_8__transaction_type",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "amount",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_8__amount)",
+                      "expression": "SUM(`Untitled_dataset_8`.`amount`)"
+                    },
+                    {
+                      "name": "Untitled_dataset_8__transaction_status",
+                      "expression": "`Untitled_dataset_8`.`transaction_status`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Amount Per Transaction Type"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "sum(Untitled_dataset_8__amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "Untitled_dataset_8__transaction_status",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 8,
+            "width": 8,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "faa39900",
+      "displayName": "Customer Analysis",
+      "layout": [
+        {
+          "widget": {
+            "name": "d30fd1b0",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-size: 24px;font-weight: 700;color: #FFAB00;\">3- CUSTOMER ANALYTICS DASHBOARD</span></span>\n",
+                "\n",
+                "<span style=\"text-align:center;display:block\"><span style=\"font-weight: 700;color: #FFAB00;\">-Overview of Customers</span></span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "customer-segment",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_9__customer_segment",
+                      "expression": "`Untitled_dataset_9`.`customer_segment`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_9__amount)",
+                      "expression": "SUM(`Untitled_dataset_9`.`amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Customer Segment And Amount Distribution"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_9__customer_segment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_9__amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 5,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "account-type-analysis",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_9__account_type",
+                      "expression": "`Untitled_dataset_9`.`account_type`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_9__amount)",
+                      "expression": "SUM(`Untitled_dataset_9`.`amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Account Type Analysis"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_9__account_type",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_9__amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 2,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "account-status-distribution",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_9__transaction_key)",
+                      "expression": "SUM(`Untitled_dataset_9`.`transaction_key`)"
+                    },
+                    {
+                      "name": "Untitled_dataset_9__account_status",
+                      "expression": "`Untitled_dataset_9`.`account_status`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Account Status Distribution"
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(Untitled_dataset_9__transaction_key)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "axis": {
+                    "title": "Transactions"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_9__account_status",
+                  "legend": {
+                    "title": "Account Status"
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "top-10-customers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_10__total_transaction_amount)",
+                      "expression": "SUM(`Untitled_dataset_10`.`total_transaction_amount`)"
+                    },
+                    {
+                      "name": "Untitled_dataset_10__customer_name",
+                      "expression": "`Untitled_dataset_10`.`customer_name`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Top 10 Customers"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "sum(Untitled_dataset_10__total_transaction_amount)",
+                  "axis": {
+                    "title": "Transaction Amount"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "Untitled_dataset_10__customer_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "customer-segment-account-type-1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_9__account_type",
+                      "expression": "`Untitled_dataset_9`.`account_type`"
+                    },
+                    {
+                      "name": "Untitled_dataset_9__customer_segment",
+                      "expression": "`Untitled_dataset_9`.`customer_segment`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_9__amount)",
+                      "expression": "SUM(`Untitled_dataset_9`.`amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Customer Segment by Account Type"
+              },
+              "mark": {
+                "layout": "group"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_9__customer_segment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_9__amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_9__account_type",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#E6E9EA",
+        "dark": "#1E2931"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#15181C"
+      },
+      "widgetBorderColor": {
+        "light": "#F3F5F6",
+        "dark": "#21292F"
+      },
+      "fontColor": {
+        "light": "#1A2127",
+        "dark": "#EEF0F2"
+      },
+      "selectionColor": {
+        "light": "#0E7AB9",
+        "dark": "#41ADEC"
+      },
+      "visualizationColors": [
+        "#A6CEE3",
+        "#1F78B4",
+        "#B2DF8A",
+        "#33A02C",
+        "#FB9A99",
+        "#E31A1C",
+        "#FDBF6F",
+        "#FF7F00",
+        "#CAB2D6",
+        "#6A3D9A",
+        "#FFFF99",
+        "#B15928"
+      ],
+      "widgetHeaderAlignment": "LEFT",
+      "fontFamily": "Inter",
+      "widgetPadding": 16,
+      "widgetMargin": 8,
+      "widgetCornerRadius": 16,
+      "widgetShadow": 50,
+      "continuousGradient": {
+        "lightMode": {
+          "fromCategoricalIndex": 0
+        },
+        "darkMode": {
+          "fromCategoricalIndex": 0
+        }
+      },
+      "fontSettings": {
+        "base": {
+          "fontFamily": "Inter",
+          "fontColor": {
+            "light": "#1A2127",
+            "dark": "#EEF0F2"
+          },
+          "fontSize": 14,
+          "fontWeight": 400
+        },
+        "widgetTitle": {
+          "fontSize": 16,
+          "fontWeight": 500
+        },
+        "widgetDescription": {
+          "fontSize": 14,
+          "fontWeight": 400
+        },
+        "fieldTitle": {
+          "textCase": "TEXT_CASE_UPPERCASE",
+          "fontColor": {
+            "light": "#31373D",
+            "dark": "#D6D8DA"
+          },
+          "fontSize": 13,
+          "fontWeight": 400
+        },
+        "fieldValue": {
+          "fontColor": {
+            "light": "#31373D",
+            "dark": "#D6D8DA"
+          },
+          "fontSize": 13,
+          "fontWeight": 400
+        }
+      },
+      "gridLineColor": {
+        "light": "#D6D7D8",
+        "dark": "#3C3E42"
+      },
+      "axisLineColor": {
+        "light": "#B0B4B6",
+        "dark": "#555E64"
+      }
+    },
+    "applyModeEnabled": false
+  }
+}

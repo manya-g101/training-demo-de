@@ -1,0 +1,125 @@
+{
+    "name": "TransformPipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "SilverToGold",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [
+                    {
+                        "activity": "BronzeToSilver",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "SilverToGold",
+                        "type": "DataFlowReference"
+                    },
+                    "compute": {
+                        "coreCount": 16,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "Fine"
+                }
+            },
+            {
+                "name": "BronzeToSilver",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "BronzeToSilver",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                            "customerP": {
+                                "value": "'@{pipeline().parameters.pCustomersPath}'",
+                                "type": "Expression"
+                            },
+                            "accountsP": {
+                                "value": "'@{pipeline().parameters.pAccountsPath}'",
+                                "type": "Expression"
+                            },
+                            "branchesP": {
+                                "value": "'@{pipeline().parameters.pBranchesPath}'",
+                                "type": "Expression"
+                            },
+                            "transactionsP": {
+                                "value": "'@{pipeline().parameters.pTransactionsPath}'",
+                                "type": "Expression"
+                            },
+                            "customerSilverP": {
+                                "value": "'@{concat(pipeline().parameters.pSilverBasePath, '/customers')}'",
+                                "type": "Expression"
+                            },
+                            "accountSilverP": {
+                                "value": "'@{concat(pipeline().parameters.pSilverBasePath, '/accounts')}'",
+                                "type": "Expression"
+                            },
+                            "branchSilverP": {
+                                "value": "'@{concat(pipeline().parameters.pSilverBasePath, '/branches')}'",
+                                "type": "Expression"
+                            },
+                            "transactionSilverP": {
+                                "value": "'@{concat(pipeline().parameters.pSilverBasePath, '/transactions')}'",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    "compute": {
+                        "coreCount": 16,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "Fine"
+                }
+            }
+        ],
+        "parameters": {
+            "pTransactionsPath": {
+                "type": "string",
+                "defaultValue": "'banking/bronze/transactions.csv'"
+            },
+            "pAccountsPath": {
+                "type": "string",
+                "defaultValue": "'banking/bronze/accounts.csv'"
+            },
+            "pBranchesPath": {
+                "type": "string",
+                "defaultValue": "'banking/bronze/branches.csv'"
+            },
+            "pCustomersPath": {
+                "type": "string",
+                "defaultValue": "'banking/bronze/customers.json'"
+            },
+            "pSilverBasePath": {
+                "type": "string",
+                "defaultValue": "'banking/silver'"
+            },
+            "pGoldBasePath": {
+                "type": "string",
+                "defaultValue": "'banking/gold'"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2026-08-19T12:56:48Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

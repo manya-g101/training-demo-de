@@ -1,0 +1,169 @@
+{
+  "root_dir": "C:\\Users\\manygupta.ext\\Downloads\\training-demo-main\\Week-5",
+  "pipelines": [
+    {
+      "name": "PL_Ingest_Bronze",
+      "file": "C:\\Users\\manygupta.ext\\Downloads\\training-demo-main\\Week-5\\PL_Ingest_Bronze_support_live\\pipeline\\PL_Ingest_Bronze.json",
+      "activities": [
+        {
+          "name": "Copy_Customers",
+          "type": "Copy",
+          "depends_on": [],
+          "inputs": [
+            "Customer_JSON"
+          ],
+          "outputs": [
+            "Bronze_Customers"
+          ]
+        },
+        {
+          "name": "Copy_accounts",
+          "type": "Copy",
+          "depends_on": [],
+          "inputs": [
+            "DelimitedText1"
+          ],
+          "outputs": [
+            "DelimitedText2"
+          ]
+        },
+        {
+          "name": "Copy_branches",
+          "type": "Copy",
+          "depends_on": [],
+          "inputs": [
+            "DelimitedText3"
+          ],
+          "outputs": [
+            "DelimitedText4"
+          ]
+        },
+        {
+          "name": "Copy_transactions",
+          "type": "Copy",
+          "depends_on": [],
+          "inputs": [
+            "DelimitedText5"
+          ],
+          "outputs": [
+            "DelimitedText6"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TransformPipeline",
+      "file": "C:\\Users\\manygupta.ext\\Downloads\\training-demo-main\\Week-5\\TransformPipeline_support_live\\pipeline\\TransformPipeline.json",
+      "activities": [
+        {
+          "name": "SilverToGold",
+          "type": "ExecuteDataFlow",
+          "depends_on": [
+            "BronzeToSilver"
+          ],
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "name": "BronzeToSilver",
+          "type": "ExecuteDataFlow",
+          "depends_on": [],
+          "inputs": [],
+          "outputs": []
+        }
+      ]
+    }
+  ],
+  "dataflows": [
+    {
+      "name": "BronzeToSilver",
+      "file": "C:\\Users\\manygupta.ext\\Downloads\\training-demo-main\\Week-5\\TransformPipeline_support_live\\dataflow\\BronzeToSilver.json",
+      "sources": [
+        "customers",
+        "accounts",
+        "branches",
+        "transactions"
+      ],
+      "sinks": [
+        "SilverCustomersSink",
+        "sinkAccounts",
+        "sinkBranches",
+        "sinkTransaction"
+      ],
+      "transformations": [
+        "derivedCustomer",
+        "filterCustomers",
+        "derivedAccounts",
+        "filterAccounts",
+        "derivedBranches",
+        "filterBranches",
+        "derivedTransactions",
+        "filterTransaction"
+      ],
+      "script": "parameters{\n     customerP as string ('banking/bronze/customers.json'),\n     accountsP as string ('banking/bronze/accounts.csv'),\n     branchesP as string ('banking/bronze/branches.csv'),\n     transactionsP as string ('banking/bronze/transactions.csv'),\n     customerSilverP as string ('banking/silver/customers'),\n     accountSilverP as string ('banking/silver/accounts'),\n     branchSilverP as string ('banking/silver/branches'),\n     transactionSilverP as string ('banking/silver/transactions')\n}\nsource(output(\n          city as string,\n          customer_id as string,\n          customer_segment as string,\n          date_of_birth as date,\n          email as string,\n          first_name as string,\n          last_name as string,\n          registration_date as date,\n          state as string\n     ),\n     useSchema: false,\n     allowSchemaDrift: true,\n     validateSchema: true,\n     inferDriftedColumnTypes: true,\n     ignoreNoFilesFound: false,\n     format: 'json',\n     fileSystem: 'banking',\n     folderPath: 'bronze',\n     fileName: 'customers.json',\n     documentForm: 'arrayOfDocuments',\n     unquotedColumnNames: true) ~> customers\nsource(output(\n          account_id as string,\n          customer_id as string,\n          account_type as string,\n          account_open_date as date,\n          account_status as string,\n          balance as decimal(10,0),\n          branch_id as string\n     ),\n     useSchema: false,\n     allowSchemaDrift: true,\n     validateSchema: false,\n     ignoreNoFilesFound: false,\n     format: 'delimited',\n     fileSystem: 'banking',\n     folderPath: 'bronze',\n     fileName: 'accounts.csv',\n     columnDelimiter: ',',\n     escapeChar: '\\\\',\n     quoteChar: '\\\"',\n     columnNamesAsHeader: true) ~> accounts\nsource(output(\n          branch_id as string,\n          branch_name as string,\n          city as string,\n          state as string,\n          region as string\n     ),\n     useSchema: false,\n     allowSchemaDrift: true,\n     validateSchema: false,\n     ignoreNoFilesFound: false,\n     format: 'delimited',\n     fileSystem: 'banking',\n     folderPath: 'bronze',\n     fileName: 'branches.csv',\n     columnDelimiter: ',',\n     escapeChar: '\\\\',\n     quoteChar: '\\\"',\n     columnNamesAsHeader: true) ~> branches\nsource(output(\n          transaction_id as string,\n          account_id as string,\n          transaction_date as date,\n          transaction_type as string,\n          amount as decimal(10,0),\n          payment_method as string,\n          merchant as string,\n          transaction_status as string\n     ),\n     useSchema: false,\n     allowSchemaDrift: true,\n     validateSchema: false,\n     ignoreNoFilesFound: false,\n     format: 'delimited',\n     fileSystem: 'banking',\n     folderPath: 'bronze',\n     fileName: 'transactions.csv',\n     columnDelimiter: ',',\n     escapeChar: '\\\\',\n     quoteChar: '\\\"',\n     columnNamesAsHeader: true) ~> transactions\ncustomers derive(first_name = trim(first_name),\n          last_name = trim(last_name),\n          customer_segment = upper(trim(customer_segment))) ~> derivedCustomer\nderivedCustomer filter(!isNull(customer_id)) ~> filterCustomers\naccounts derive(account_type = upper(trim(account_type)),\n          account_status = upper(trim(account_status)),\n          branch_id = trim(branch_id)) ~> derivedAccounts\nderivedAccounts filter(!isNull(account_id)\n&&\n!isNull(customer_id)) ~> filterAccounts\nbranches derive(branch_id = trim(branch_id),\n          branch_name = upper(trim(branch_name)),\n          city = upper(trim(city)),\n          state = upper(trim(state)),\n          region = upper(trim(region))) ~> derivedBranches\nderivedBranches filter(!isNull(branch_id)) ~> filterBranches\ntransactions derive(transaction_id = trim(transaction_id),\n          account_id = trim(account_id),\n          transaction_type = upper(trim(transaction_type)),\n          transaction_status = upper(trim(transaction_status))) ~> derivedTransactions\nderivedTransactions filter(!isNull(transaction_id)\n&&\n!isNull(account_id)) ~> filterTransaction\nfilterCustomers sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/customers',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> SilverCustomersSink\nfilterAccounts sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/accounts',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> sinkAccounts\nfilterBranches sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/branches',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> sinkBranches\nfilterTransaction sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/transactions',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> sinkTransaction"
+    },
+    {
+      "name": "SilverToGold",
+      "file": "C:\\Users\\manygupta.ext\\Downloads\\training-demo-main\\Week-5\\TransformPipeline_support_live\\dataflow\\SilverToGold.json",
+      "sources": [
+        "customers",
+        "accounts",
+        "branches",
+        "transactions"
+      ],
+      "sinks": [
+        "custdim",
+        "sinkdimaccount",
+        "sinkdimBranches",
+        "customertransactionsummary"
+      ],
+      "transformations": [
+        "join1",
+        "join2",
+        "join3",
+        "aggregateTransactions"
+      ],
+      "script": "source(output(\n          city as string,\n          customer_id as string,\n          customer_segment as string,\n          date_of_birth as date,\n          email as string,\n          first_name as string,\n          last_name as string,\n          registration_date as date,\n          state as string\n     ),\n     allowSchemaDrift: true,\n     validateSchema: false,\n     ignoreNoFilesFound: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/customers') ~> customers\nsource(output(\n          account_id as string,\n          customer_id as string,\n          account_type as string,\n          account_open_date as date,\n          account_status as string,\n          balance as decimal(10,0),\n          branch_id as string\n     ),\n     allowSchemaDrift: true,\n     validateSchema: false,\n     ignoreNoFilesFound: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/accounts') ~> accounts\nsource(output(\n          branch_id as string,\n          branch_name as string,\n          city as string,\n          state as string,\n          region as string\n     ),\n     allowSchemaDrift: true,\n     validateSchema: false,\n     ignoreNoFilesFound: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/branches') ~> branches\nsource(output(\n          transaction_id as string,\n          account_id as string,\n          transaction_date as date,\n          transaction_type as string,\n          amount as decimal(10,0),\n          payment_method as string,\n          merchant as string,\n          transaction_status as string\n     ),\n     allowSchemaDrift: true,\n     validateSchema: false,\n     ignoreNoFilesFound: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'silver/transactions') ~> transactions\ntransactions, accounts join(transactions@account_id == accounts@account_id,\n     joinType:'inner',\n     matchType:'exact',\n     ignoreSpaces: false,\n     broadcast: 'auto')~> join1\njoin1, customers join(accounts@customer_id == customers@customer_id,\n     joinType:'inner',\n     matchType:'exact',\n     ignoreSpaces: false,\n     broadcast: 'auto')~> join2\njoin2, branches join(accounts@branch_id == branches@branch_id,\n     joinType:'inner',\n     matchType:'exact',\n     ignoreSpaces: false,\n     broadcast: 'auto')~> join3\njoin3 aggregate(groupBy(customers@customer_id),\n     transaction_count = count(transaction_id),\n          total_transaction_amount = sum(amount),\n          average_transaction_amount = avg(amount),\n          unique_transaction_types = countDistinct(transaction_type)) ~> aggregateTransactions\ncustomers sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'gold/customers',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> custdim\naccounts sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'gold/accounts',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> sinkdimaccount\nbranches sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'gold/branches',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> sinkdimBranches\naggregateTransactions sink(allowSchemaDrift: true,\n     validateSchema: false,\n     format: 'delta',\n     fileSystem: 'banking',\n     folderPath: 'gold/transactions',\n     overwrite: true,\n     mergeSchema: false,\n     autoCompact: false,\n     optimizedWrite: false,\n     vacuum: 0,\n     deletable: false,\n     insertable: true,\n     updateable: false,\n     upsertable: false,\n     umask: 0022,\n     preCommands: [],\n     postCommands: [],\n     skipDuplicateMapInputs: true,\n     skipDuplicateMapOutputs: true) ~> customertransactionsummary"
+    }
+  ],
+  "dependencies": [
+    {
+      "pipeline": "PL_Ingest_Bronze",
+      "activity": "Copy_Customers",
+      "from": "Customer_JSON",
+      "to": "Bronze_Customers",
+      "type": "copy"
+    },
+    {
+      "pipeline": "PL_Ingest_Bronze",
+      "activity": "Copy_accounts",
+      "from": "DelimitedText1",
+      "to": "DelimitedText2",
+      "type": "copy"
+    },
+    {
+      "pipeline": "PL_Ingest_Bronze",
+      "activity": "Copy_branches",
+      "from": "DelimitedText3",
+      "to": "DelimitedText4",
+      "type": "copy"
+    },
+    {
+      "pipeline": "PL_Ingest_Bronze",
+      "activity": "Copy_transactions",
+      "from": "DelimitedText5",
+      "to": "DelimitedText6",
+      "type": "copy"
+    },
+    {
+      "dataflow": "BronzeToSilver",
+      "type": "standardization_or_filter",
+      "details": "Contains filtering or standardization logic"
+    },
+    {
+      "dataflow": "SilverToGold",
+      "type": "join_or_aggregation",
+      "details": "Contains join or aggregate logic"
+    }
+  ]
+}

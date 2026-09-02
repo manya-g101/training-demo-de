@@ -1,0 +1,23 @@
+{
+    "now": "2026-08-29T10:40:54.598Z",
+    "perfNow": 242296.89999999106,
+    "diagnosticCorrelation": "77390259-3746-49d8-a8c9-da5fba44a5be",
+    "source": "DownloadSupportFiles",
+    "environment": {
+        "productName": "a365",
+        "buildVersion": "26.0729.07",
+        "environmentType": 9,
+        "resourceName": "banking101",
+        "resourceRegion": "australiaeast",
+        "resourceGroup": "Synapse-rg",
+        "subscriptionId": "e5ad2966-bc18-422f-bb27-59db98638216",
+        "sessionId": "1O8B3ProCxIOdInAjeYWDh",
+        "operationId": "zcO`H",
+        "gitType": "live",
+        "loggingKey": "7ebd5ee2-f630-4bf3-b6fe-e9107ca078eb"
+    },
+    "additionalInfo": {
+        "selectedResource": "PL_Ingest_Bronze",
+        "selectedResourceType": "pipeline"
+    }
+}

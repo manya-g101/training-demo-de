@@ -1,0 +1,23 @@
+{
+    "now": "2026-08-29T10:41:00.841Z",
+    "perfNow": 248539.59999999404,
+    "diagnosticCorrelation": "5b103d51-da90-4654-8915-34e89e0912c7",
+    "source": "DownloadSupportFiles",
+    "environment": {
+        "productName": "a365",
+        "buildVersion": "26.0729.07",
+        "environmentType": 9,
+        "resourceName": "banking101",
+        "resourceRegion": "australiaeast",
+        "resourceGroup": "Synapse-rg",
+        "subscriptionId": "e5ad2966-bc18-422f-bb27-59db98638216",
+        "sessionId": "1O8B3ProCxIOdInAjeYWDh",
+        "operationId": "zcO`H",
+        "gitType": "live",
+        "loggingKey": "7ebd5ee2-f630-4bf3-b6fe-e9107ca078eb"
+    },
+    "additionalInfo": {
+        "selectedResource": "TransformPipeline",
+        "selectedResourceType": "pipeline"
+    }
+}

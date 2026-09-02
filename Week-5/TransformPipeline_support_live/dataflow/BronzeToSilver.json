@@ -1,0 +1,289 @@
+{
+    "name": "BronzeToSilver",
+    "properties": {
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "customers"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "accounts"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "branches"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "transactions"
+                }
+            ],
+            "sinks": [
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SilverCustomersSink"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "sinkAccounts"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "sinkBranches"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "banking101-WorkspaceDefaultStorage",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "sinkTransaction"
+                }
+            ],
+            "transformations": [
+                {
+                    "name": "derivedCustomer"
+                },
+                {
+                    "name": "filterCustomers"
+                },
+                {
+                    "name": "derivedAccounts"
+                },
+                {
+                    "name": "filterAccounts"
+                },
+                {
+                    "name": "derivedBranches"
+                },
+                {
+                    "name": "filterBranches"
+                },
+                {
+                    "name": "derivedTransactions"
+                },
+                {
+                    "name": "filterTransaction"
+                }
+            ],
+            "scriptLines": [
+                "parameters{",
+                "     customerP as string ('banking/bronze/customers.json'),",
+                "     accountsP as string ('banking/bronze/accounts.csv'),",
+                "     branchesP as string ('banking/bronze/branches.csv'),",
+                "     transactionsP as string ('banking/bronze/transactions.csv'),",
+                "     customerSilverP as string ('banking/silver/customers'),",
+                "     accountSilverP as string ('banking/silver/accounts'),",
+                "     branchSilverP as string ('banking/silver/branches'),",
+                "     transactionSilverP as string ('banking/silver/transactions')",
+                "}",
+                "source(output(",
+                "          city as string,",
+                "          customer_id as string,",
+                "          customer_segment as string,",
+                "          date_of_birth as date,",
+                "          email as string,",
+                "          first_name as string,",
+                "          last_name as string,",
+                "          registration_date as date,",
+                "          state as string",
+                "     ),",
+                "     useSchema: false,",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: true,",
+                "     inferDriftedColumnTypes: true,",
+                "     ignoreNoFilesFound: false,",
+                "     format: 'json',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'bronze',",
+                "     fileName: 'customers.json',",
+                "     documentForm: 'arrayOfDocuments',",
+                "     unquotedColumnNames: true) ~> customers",
+                "source(output(",
+                "          account_id as string,",
+                "          customer_id as string,",
+                "          account_type as string,",
+                "          account_open_date as date,",
+                "          account_status as string,",
+                "          balance as decimal(10,0),",
+                "          branch_id as string",
+                "     ),",
+                "     useSchema: false,",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     ignoreNoFilesFound: false,",
+                "     format: 'delimited',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'bronze',",
+                "     fileName: 'accounts.csv',",
+                "     columnDelimiter: ',',",
+                "     escapeChar: '\\\\',",
+                "     quoteChar: '\\\"',",
+                "     columnNamesAsHeader: true) ~> accounts",
+                "source(output(",
+                "          branch_id as string,",
+                "          branch_name as string,",
+                "          city as string,",
+                "          state as string,",
+                "          region as string",
+                "     ),",
+                "     useSchema: false,",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     ignoreNoFilesFound: false,",
+                "     format: 'delimited',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'bronze',",
+                "     fileName: 'branches.csv',",
+                "     columnDelimiter: ',',",
+                "     escapeChar: '\\\\',",
+                "     quoteChar: '\\\"',",
+                "     columnNamesAsHeader: true) ~> branches",
+                "source(output(",
+                "          transaction_id as string,",
+                "          account_id as string,",
+                "          transaction_date as date,",
+                "          transaction_type as string,",
+                "          amount as decimal(10,0),",
+                "          payment_method as string,",
+                "          merchant as string,",
+                "          transaction_status as string",
+                "     ),",
+                "     useSchema: false,",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     ignoreNoFilesFound: false,",
+                "     format: 'delimited',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'bronze',",
+                "     fileName: 'transactions.csv',",
+                "     columnDelimiter: ',',",
+                "     escapeChar: '\\\\',",
+                "     quoteChar: '\\\"',",
+                "     columnNamesAsHeader: true) ~> transactions",
+                "customers derive(first_name = trim(first_name),",
+                "          last_name = trim(last_name),",
+                "          customer_segment = upper(trim(customer_segment))) ~> derivedCustomer",
+                "derivedCustomer filter(!isNull(customer_id)) ~> filterCustomers",
+                "accounts derive(account_type = upper(trim(account_type)),",
+                "          account_status = upper(trim(account_status)),",
+                "          branch_id = trim(branch_id)) ~> derivedAccounts",
+                "derivedAccounts filter(!isNull(account_id)",
+                "&&",
+                "!isNull(customer_id)) ~> filterAccounts",
+                "branches derive(branch_id = trim(branch_id),",
+                "          branch_name = upper(trim(branch_name)),",
+                "          city = upper(trim(city)),",
+                "          state = upper(trim(state)),",
+                "          region = upper(trim(region))) ~> derivedBranches",
+                "derivedBranches filter(!isNull(branch_id)) ~> filterBranches",
+                "transactions derive(transaction_id = trim(transaction_id),",
+                "          account_id = trim(account_id),",
+                "          transaction_type = upper(trim(transaction_type)),",
+                "          transaction_status = upper(trim(transaction_status))) ~> derivedTransactions",
+                "derivedTransactions filter(!isNull(transaction_id)",
+                "&&",
+                "!isNull(account_id)) ~> filterTransaction",
+                "filterCustomers sink(allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     format: 'delta',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'silver/customers',",
+                "     overwrite: true,",
+                "     mergeSchema: false,",
+                "     autoCompact: false,",
+                "     optimizedWrite: false,",
+                "     vacuum: 0,",
+                "     deletable: false,",
+                "     insertable: true,",
+                "     updateable: false,",
+                "     upsertable: false,",
+                "     umask: 0022,",
+                "     preCommands: [],",
+                "     postCommands: [],",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true) ~> SilverCustomersSink",
+                "filterAccounts sink(allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     format: 'delta',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'silver/accounts',",
+                "     overwrite: true,",
+                "     mergeSchema: false,",
+                "     autoCompact: false,",
+                "     optimizedWrite: false,",
+                "     vacuum: 0,",
+                "     deletable: false,",
+                "     insertable: true,",
+                "     updateable: false,",
+                "     upsertable: false,",
+                "     umask: 0022,",
+                "     preCommands: [],",
+                "     postCommands: [],",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true) ~> sinkAccounts",
+                "filterBranches sink(allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     format: 'delta',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'silver/branches',",
+                "     overwrite: true,",
+                "     mergeSchema: false,",
+                "     autoCompact: false,",
+                "     optimizedWrite: false,",
+                "     vacuum: 0,",
+                "     deletable: false,",
+                "     insertable: true,",
+                "     updateable: false,",
+                "     upsertable: false,",
+                "     umask: 0022,",
+                "     preCommands: [],",
+                "     postCommands: [],",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true) ~> sinkBranches",
+                "filterTransaction sink(allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     format: 'delta',",
+                "     fileSystem: 'banking',",
+                "     folderPath: 'silver/transactions',",
+                "     overwrite: true,",
+                "     mergeSchema: false,",
+                "     autoCompact: false,",
+                "     optimizedWrite: false,",
+                "     vacuum: 0,",
+                "     deletable: false,",
+                "     insertable: true,",
+                "     updateable: false,",
+                "     upsertable: false,",
+                "     umask: 0022,",
+                "     preCommands: [],",
+                "     postCommands: [],",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true) ~> sinkTransaction"
+            ]
+        }
+    }
+}
