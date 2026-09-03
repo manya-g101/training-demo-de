@@ -68,6 +68,8 @@ async def list_mcp_tools(server_script: str | Path | None = None) -> list[str]:
             tool_list = await session.list_tools()
             return [tool.name for tool in tool_list.tools]
 
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+
 
 async def main() -> None:
     server_script = Path(__file__).with_name("mcp_server.py")
@@ -88,7 +90,7 @@ async def main() -> None:
             result = await session.call_tool(
                 "build_discovery_report_tool",
                 {
-                    "root_dir": r"C:\Users\manygupta.ext\Downloads\training-demo-main\Week-5",
+                    "root_dir": str(DEFAULT_ROOT),
                 },
             )
             print("\nDiscovery report:")
