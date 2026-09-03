@@ -1,0 +1,15 @@
+bundle:
+  name: training-demo-week6
+
+include:
+  - resources/*.yml
+
+variables:
+  demo_notebook_path:
+    default: "${workspace.file_path}/notebooks/week6_demo_notebook"
+
+targets:
+  dev:
+    mode: development
+    workspace:
+      host: https://dbc-c31abee6-b72a.cloud.databricks.com

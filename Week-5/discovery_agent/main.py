@@ -38,10 +38,12 @@ def write_report_files(report: dict, base_dir: str | Path) -> Path:
 
     return output_dir
 
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Simple migration discovery agent for Synapse exports")
-    parser.add_argument("--root", default=r"C:\Users\manygupta.ext\Downloads\training-demo-main\Week-5", help="Root folder containing Synapse JSON exports")
+    parser.add_argument("--root", default=str(DEFAULT_ROOT), help="Root folder containing Synapse JSON exports")
     parser.add_argument("--mcp-server", action="store_true", help="Run the MCP discovery server instead of the direct agent")
     parser.add_argument("--agent-loop", action="store_true", help="Use the minimal Gemini-driven MCP tool selection loop instead of the direct heuristic pass")
     args = parser.parse_args()

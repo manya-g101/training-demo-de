@@ -1,0 +1,31 @@
+name: Week 6 CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - feature/week6-cicd
+
+jobs:
+  discovery-agent-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Discovery Agent dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r Week-5/discovery_agent/requirements.txt
+          python -m pip install pytest
+
+      - name: Run Discovery Agent pytest suite
+        run: python -m pytest Week-5/discovery_agent/tests -q
