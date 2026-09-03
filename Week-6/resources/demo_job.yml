@@ -7,8 +7,3 @@ resources:
           notebook_task:
             notebook_path: ${var.demo_notebook_path}
             source: WORKSPACE
-          environment_key: default
-      environments:
-        - environment_key: default
-          spec:
-            client: "1"
